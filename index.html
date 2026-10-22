@@ -3,7 +3,6 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <base target="_top">
   <title>ระบบรับแจ้งอุบัติการณ์</title>
   <style>
     html, body {
@@ -12,6 +11,7 @@
       margin: 0;
       padding: 0;
       overflow: hidden;
+      background-color: #f0fdfa; /* สีพื้นหลังระหว่างโหลด */
     }
     iframe {
       position: fixed;
@@ -23,25 +23,59 @@
     }
   </style>
 </head>
-<body oncontextmenu="return false;"> <!-- ป้องกันคลิกขวา -->
-  <iframe
-    title="ระบบรับแจ้งอุบัติการณ์"
-    src="https://script.google.com/macros/s/AKfycbw4iUUAD6nfroW4SK8PwLBy10Q0Hs55PlBJCuIKJufHn7tcIHTUxtXy-ElBwKJQemB9/exec"
-    allow="camera; fullscreen"
-    allowfullscreen
-    sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals">
-  </iframe>
+<body oncontextmenu="return false;"> <!-- ป้องกันการคลิกขวา -->
+
+  <!-- นำ iframe มาไว้ใน JavaScript แทน เพื่อไม่ให้เห็น URL ตรงๆ ในแท็ก HTML -->
+  <div id="app-container"></div>
 
   <script>
-    // ป้องกันการกด F12, Ctrl+U, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C
+    // 1. ป้องกันการกดคีย์ลัดสำหรับดู Source Code และ Developer Tools
     document.addEventListener('keydown', function(e) {
-      if (e.key === 'F12' || 
-         (e.ctrlKey && e.shiftKey && ['I', 'J', 'C'].includes(e.key.toUpperCase())) || 
-         (e.ctrlKey && e.key.toUpperCase() === 'U')) {
+      // บล็อก F12
+      if (e.key === 'F12' || e.keyCode === 123) {
+        e.preventDefault();
+        return false;
+      }
+      // บล็อก Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C (Windows/Linux)
+      if (e.ctrlKey && e.shiftKey && ['I', 'J', 'C'].includes(e.key.toUpperCase())) {
+        e.preventDefault();
+        return false;
+      }
+      // บล็อก Cmd+Option+I, Cmd+Option+J, Cmd+Option+C (Mac)
+      if (e.metaKey && e.altKey && ['I', 'J', 'C'].includes(e.key.toUpperCase())) {
+        e.preventDefault();
+        return false;
+      }
+      // บล็อก Ctrl+U (View Source)
+      if (e.ctrlKey && e.key.toUpperCase() === 'U') {
         e.preventDefault();
         return false;
       }
     });
+
+    // 2. สร้าง iframe ผ่าน JavaScript และเข้ารหัส URL เป็น Base64
+    // (เพื่อไม่ให้คนที่เปิดดู Source Code เห็น URL ของ Google Script ตรงๆ)
+    (function() {
+      // URL ของคุณ (แปลงเป็น Base64 เพื่อซ่อน)
+      const encodedUrl = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J3NGlVVUFENm5mcm9XNFNLOFB3TEJ5MTBRMEhzNTVQbEJKRXVJS0p1ZkhuN3RjSUhUVXh0WHktRWxCd0tKUWVtQjkvZXhlYw==";
+      
+      const iframe = document.createElement('iframe');
+      iframe.src = atob(encodedUrl); // ถอดรหัส Base64 กลับเป็น URL
+      iframe.title = "ระบบรับแจ้งอุบัติการณ์";
+      iframe.allow = "camera; fullscreen";
+      iframe.allowFullscreen = true;
+      
+      // เพิ่ม iframe ลงในหน้าเว็บ
+      document.getElementById('app-container').appendChild(iframe);
+    })();
+
+    // 3. ต่อต้านการพยายาม Debug (ถ้าคนขี้สงสัยพยายามเปิด Console ระบบจะวนลูป)
+    setInterval(function() {
+      // ฟังก์ชัน Debugger นี้จะทำให้เบราว์เซอร์หยุดทำงานชั่วคราวเมื่อเปิด DevTools
+      // (function() { return false; }['constructor']('debugger')['call']());
+      
+      // หมายเหตุ: บางเบราว์เซอร์อาจจะกระตุกถ้าใช้ debugger วนลูป ถ้าไม่จำเป็นให้เปิดใช้บรรทัดนี้
+    }, 1000);
   </script>
 </body>
 </html>
