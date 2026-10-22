@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <base target="_top">
+  <title>ระบบรับแจ้งอุบัติการณ์</title>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    iframe {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <!-- แก้ไขเครื่องหมาย " ที่ปิดไม่ครบตรง title และเพิ่ม attribute sandbox -->
+  <iframe
+    title="ระบบรับแจ้งอุบัติการณ์"
+    src="https://script.google.com/macros/s/AKfycbw4iUUAD6nfroW4SK8PwLBy10Q0Hs55PlBJCuIKJufHn7tcIHTUxtXy-ElBwKJQemB9/exec"
+    allow="camera; fullscreen"
+    allowfullscreen
+    sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals">
+  </iframe>
+</body>
+</html>
