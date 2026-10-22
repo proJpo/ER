@@ -28,7 +28,7 @@
   <div id="app-container"></div>
 
   <script>
-    // 1. ป้องกันคีย์ลัด
+    // 1. ป้องกันคีย์ลัดขอดู Source code
     document.addEventListener('keydown', function(e) {
       if (e.key === 'F12' || 
          (e.ctrlKey && e.shiftKey && ['I', 'J', 'C'].includes(e.key.toUpperCase())) || 
@@ -38,21 +38,17 @@
       }
     });
 
-    // 2. ฟังก์ชันซ่อน URL (Obfuscation)
+    // 2. สร้าง iframe
     (function() {
-      // นำ URL ของคุณมาเข้ารหัสแบบกลับด้าน (Reverse String) 
-      // URL: https://script.google.com/macros/s/......../exec
-      // ตัวแปรด้านล่างนี้คือ URL ที่ถูกกลับด้านแล้ว
-      const _0x1a2b = "cexe/9BmeQJKwBlE-yXtxUHTIc7tHnfuJKICJBPllP55sH0Q01yBLwP8KS4orfn6DAUUIi4wbc yfkA/s/core/moc.elgoog.tpircs//:sptth";
-      
-      // ทำการกลับด้านข้อความให้กลายเป็น URL ปกติ
-      const gasUrl = _0x1a2b.split("").reverse().join("").replace(/ /g, ""); 
+      const gasUrl = "https://script.google.com/macros/s/AKfycbw4iUUAD6nfroW4SK8PwLBy10Q0Hs55PlBJCuIKJufHn7tcIHTUxtXy-ElBwKJQemB9/exec";
       
       const iframe = document.createElement('iframe');
       iframe.src = gasUrl;
       iframe.title = "ระบบรับแจ้งอุบัติการณ์";
       iframe.setAttribute('allow', 'camera; fullscreen');
       iframe.setAttribute('allowfullscreen', 'true');
+      
+      // 💡 จุดสำคัญ: เพิ่ม sandbox และ credentialless เพื่อแก้ปัญหา Cookie และ iframe บล็อก
       iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-popups allow-modals');
       iframe.setAttribute('credentialless', 'true'); 
       
