@@ -11,7 +11,7 @@
       margin: 0;
       padding: 0;
       overflow: hidden;
-      background-color: #f0fdfa; /* สีพื้นหลังกรณีโหลดช้า */
+      background-color: #f0fdfa;
     }
     iframe {
       position: fixed;
@@ -25,12 +25,10 @@
   </style>
 </head>
 <body oncontextmenu="return false;">
-
-  <!-- Container สำหรับเก็บ iframe -->
   <div id="app-container"></div>
 
   <script>
-    // 1. ป้องกันการกดปุ่มลัดสำหรับดู Source Code และ Developer Tools
+    // 1. ป้องกันคีย์ลัดขอดู Source code
     document.addEventListener('keydown', function(e) {
       if (e.key === 'F12' || 
          (e.ctrlKey && e.shiftKey && ['I', 'J', 'C'].includes(e.key.toUpperCase())) || 
@@ -40,10 +38,9 @@
       }
     });
 
-    // 2. สร้าง iframe แบบ Dynamic
+    // 2. สร้าง iframe
     (function() {
-      // ⚠️ สำคัญมาก: นำ URL จาก Google Apps Script ของคุณมาใส่ตรงนี้ (ต้องลงท้ายด้วย /exec)
-      const gasUrl = "https://script.google.com/macros/s/AKfycbw4iUUAD6nfroW4SK8PwLBy10Q0Hs55PlBJCuIKJufHn7tcIHTUxtXy-ElBwKJQemB9/exec"; 
+      const gasUrl = "https://script.google.com/macros/s/AKfycbw4iUUAD6nfroW4SK8PwLBy10Q0Hs55PlBJCuIKJufHn7tcIHTUxtXy-ElBwKJQemB9/exec";
       
       const iframe = document.createElement('iframe');
       iframe.src = gasUrl;
@@ -51,7 +48,10 @@
       iframe.setAttribute('allow', 'camera; fullscreen');
       iframe.setAttribute('allowfullscreen', 'true');
       
-      // สั่งให้โหลด iframe ลงในหน้าเว็บ
+      // 💡 จุดสำคัญ: เพิ่ม sandbox และ credentialless เพื่อแก้ปัญหา Cookie และ iframe บล็อก
+      iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-popups allow-modals');
+      iframe.setAttribute('credentialless', 'true'); 
+      
       document.getElementById('app-container').appendChild(iframe);
     })();
   </script>
