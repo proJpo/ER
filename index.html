@@ -23,8 +23,7 @@
     }
   </style>
 </head>
-<body>
-  <!-- แก้ไขเครื่องหมาย " ที่ปิดไม่ครบตรง title และเพิ่ม attribute sandbox -->
+<body oncontextmenu="return false;"> <!-- ป้องกันคลิกขวา -->
   <iframe
     title="ระบบรับแจ้งอุบัติการณ์"
     src="https://script.google.com/macros/s/AKfycbw4iUUAD6nfroW4SK8PwLBy10Q0Hs55PlBJCuIKJufHn7tcIHTUxtXy-ElBwKJQemB9/exec"
@@ -32,5 +31,17 @@
     allowfullscreen
     sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals">
   </iframe>
+
+  <script>
+    // ป้องกันการกด F12, Ctrl+U, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'F12' || 
+         (e.ctrlKey && e.shiftKey && ['I', 'J', 'C'].includes(e.key.toUpperCase())) || 
+         (e.ctrlKey && e.key.toUpperCase() === 'U')) {
+        e.preventDefault();
+        return false;
+      }
+    });
+  </script>
 </body>
 </html>
